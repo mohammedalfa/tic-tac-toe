@@ -1,7 +1,8 @@
 :root {
   --header-color: #3b4252;
+  --logo-color: #eceff4;
   --bg-color: #eceff4;
-  --font-color: #2e3440;
+  --font-color: #eceff4;
   --game-tile-color: #d8dee9;
   --game-container-color: #6e778c;
   --button-color: #bf616a;
@@ -9,7 +10,8 @@
 }
 
 :root.dark {
-
+  --bg-color: #2e3440;
+  --font-color: #2e3440;
 }
 
 html, body {
@@ -24,11 +26,11 @@ html, body {
   box-sizing: inherit;
   margin: 0;
   padding: 0;
+  color: var(--font-color);
 }
 
 .header {
   background-color: var(--header-color);
-  color: var(--bg-color);
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -36,6 +38,7 @@ html, body {
 }
 
 .header .logo {
+  color: var(--logo-color);
   font-weight: 700;
   font-size: 2.5rem;
 }

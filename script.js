@@ -111,7 +111,11 @@ const gameController = (function(board, player1, player2) {
   }
 
   const playRound = (index) => {
-    let status = checkBoard();
+    if (board.placeSymbol(index, _currentPlayer.getSymbol()) === 1) {
+      console.log(`Cannot play at ${index}`);
+      return 0;
+    }
+    const status = checkBoard();
     if (status === "tie") {
       console.log("tie");
       return 3;
@@ -121,10 +125,6 @@ const gameController = (function(board, player1, player2) {
     } else if (status === player2.getSymbol()) {
       console.log(`${player2.getName()} won`);
       return 2;
-    }
-    if (board.placeSymbol(index, _currentPlayer.getSymbol()) === 1) {
-      console.log(`Cannot play at ${index}`);
-      return 0;
     }
     switchCurrentPlayer();
     printRound();
@@ -160,8 +160,24 @@ const displayController = (function(game, board, doc) {
   const _gameScoreDiv = doc.querySelector(".game-score");
 
   const _clickHandler = function(e) {
-    game.playRound(e.target.id);
+    const status = game.playRound(e.target.id);
     updateDisplay();
+    _winHandler(status);
+  };
+
+  const _winHandler = (status) => {
+    if (status === 0) {
+      return;
+    } else if (status === 1) {
+      _gameInfoDiv.textContent = `${game.getPlayerOne().getName()} WON`;
+    } else if (status === 2) {
+      _gameInfoDiv.textContent = `${game.getPlayerTwo().getName()} WON`;
+    } else if (status === 3) {
+      _gameInfoDiv.textContent = "TIE";
+    }
+    board.clearBoard();
+    displayGrid();
+    displayScore();
   };
 
   const displayInfo = () => {
@@ -201,5 +217,10 @@ const displayController = (function(game, board, doc) {
     updateDisplay,
   };
 })(gameController, gameBoard, document);
+
+const themeButton = document.querySelector("#theme-toggle");
+themeButton.addEventListener("click", () => {
+  document.documentElement.classList.toggle("dark");
+});
 
 displayController.updateDisplay();
