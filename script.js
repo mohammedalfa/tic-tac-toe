@@ -158,5 +158,48 @@ const displayController = (function(game, board, doc) {
   const _gameInfoDiv = doc.querySelector(".game-info");
   const _gameGridDiv = doc.querySelector(".grid");
   const _gameScoreDiv = doc.querySelector(".game-score");
+
+  const _clickHandler = function(e) {
+    game.playRound(e.target.id);
+    updateDisplay();
+  };
+
+  const displayInfo = () => {
+    _gameInfoDiv.textContent = `${game.getCurrentPlayer().getName()}'S TURN`;
+  };
   
+  const displayGrid = () => {
+    _gameGridDiv.innerHTML = "";
+    for (let i = 0; i < 9; i++) {
+      let tile = doc.createElement("div");
+      tile.classList.add("tile");
+      tile.id = i;
+      tile.textContent = board.getBoard()[i];
+      tile.addEventListener("click", _clickHandler);
+      _gameGridDiv.appendChild(tile);
+    }
+  };
+
+  const displayScore = () => {
+    _gameScoreDiv.querySelector(".p1-win").textContent = 
+      `${game.getPlayerOne().getSymbol()}: ${game.getPlayerOne().getWins()}`;
+    _gameScoreDiv.querySelector(".tie").textContent = `TIE: ${game.getTies()}`;
+    _gameScoreDiv.querySelector(".p2-win").textContent = 
+      `${game.getPlayerTwo().getSymbol()}: ${game.getPlayerTwo().getWins()}`;
+  };
+
+  const updateDisplay = () => {
+    displayInfo();
+    displayGrid();
+    displayScore();
+  }
+
+  return {
+    displayInfo,
+    displayGrid,
+    displayScore,
+    updateDisplay,
+  };
 })(gameController, gameBoard, document);
+
+displayController.updateDisplay();
