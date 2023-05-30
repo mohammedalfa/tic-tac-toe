@@ -84,17 +84,17 @@ const gameController = (function(board, player1, player2) {
 
     // check rows
     if (_board[0] === _board[1] && _board[0] === _board[2]) winner = _board[0];
-    if (_board[3] === _board[4] && _board[3] === _board[5]) winner = _board[3];
-    if (_board[6] === _board[7] && _board[6] === _board[8]) winner = _board[6];
+    else if (_board[3] === _board[4] && _board[3] === _board[5]) winner = _board[3];
+    else if (_board[6] === _board[7] && _board[6] === _board[8]) winner = _board[6];
 
     // check columns
     if (_board[0] === _board[3] && _board[0] === _board[6]) winner = _board[0];
-    if (_board[1] === _board[4] && _board[1] === _board[7]) winner = _board[1];
-    if (_board[2] === _board[5] && _board[2] === _board[8]) winner = _board[2];
+    else if (_board[1] === _board[4] && _board[1] === _board[7]) winner = _board[1];
+    else if (_board[2] === _board[5] && _board[2] === _board[8]) winner = _board[2];
 
     // check diagonals
     if (_board[0] === _board[4] && _board[0] === _board[8]) winner = _board[0];
-    if (_board[2] === _board[4] && _board[2] === _board[6]) winner = _board[2];
+    else if (_board[2] === _board[4] && _board[2] === _board[6]) winner = _board[2];
 
     if (winner === player1.getSymbol()) {
       player1.addWin();
@@ -111,10 +111,6 @@ const gameController = (function(board, player1, player2) {
   }
 
   const playRound = (index) => {
-    if (board.placeSymbol(index, _currentPlayer.getSymbol()) === 1) {
-      console.log(`Cannot play at ${index}`);
-      return 0;
-    }
     let status = checkBoard();
     if (status === "tie") {
       console.log("tie");
@@ -125,6 +121,10 @@ const gameController = (function(board, player1, player2) {
     } else if (status === player2.getSymbol()) {
       console.log(`${player2.getName()} won`);
       return 2;
+    }
+    if (board.placeSymbol(index, _currentPlayer.getSymbol()) === 1) {
+      console.log(`Cannot play at ${index}`);
+      return 0;
     }
     switchCurrentPlayer();
     printRound();
